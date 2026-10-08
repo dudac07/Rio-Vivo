@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RioVivo AI</title><link rel="stylesheet" href="style.css"></head>
+<body><header><div><h1>🌊 RioVivo AI</h1><p>Monitoramento inteligente do nosso rio</p></div><button id="connect">🔌 Conectar à boia</button></header>
+<main><section class="hero"><h2>Dados da água em tempo real</h2><p id="conn">Modo demonstração</p></section>
+<section class="cards">
+<article id="pc"><b>🧪 pH</b><strong id="ph">7.0</strong><span id="ps">Normal</span></article>
+<article id="tc"><b>💧 Turbidez</b><strong id="tu">20</strong><span>NTU (estimado)</span></article>
+<article id="tempC"><b>🌡️ Temperatura</b><strong id="te">24.0</strong><span>°C</span></article>
+<article id="lc"><b>📏 Nível</b><strong id="lv">35</strong><span>% do limite</span></article></section>
+<section class="panel"><h2>💚 Índice de Saúde do Rio: <span id="health">92</span>/100</h2><div class="bar"><i id="bar"></i></div><p id="hm">Condições normais.</p><small>Indicador criado para o protótipo.</small></section>
+<section class="two"><section class="panel"><h2>🤖 Análise</h2><p id="ai"></p></section><section class="panel"><h2>🚨 Alertas</h2><div id="alerts"></div></section></section>
+<section class="panel"><h2>📊 Histórico</h2><canvas id="chart" width="900" height="260"></canvas></section>
+<section class="panel"><h2>🎮 Demonstração</h2><button onclick="demo('normal')">🟢 Normal</button><button onclick="demo('attention')">🟡 Atenção</button><button onclick="demo('danger')">🔴 Crítico</button></section>
+<section class="panel"><h2>🔧 Fluxo</h2><p class="flow">🧪 Sensores → 🟦 Arduino → 📡 Comunicação → 📱 RioVivo AI</p></section></main>
+<footer>RioVivo AI • Protótipo educacional • Alvorada do Sul – PR</footer><script src="script.js"></script></body></html>
