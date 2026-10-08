@@ -1,1 +1,269 @@
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#eef8f7;color:#123}header{background:linear-gradient(135deg,#087f8c,#12a8a0);color:white;padding:20px 5%;display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}h1{margin:0}header p{margin:4px 0 0}main{max-width:1100px;margin:auto;padding:20px}.hero,.panel,.cards article{background:white;border-radius:18px;padding:20px;box-shadow:0 5px 18px #0001}.hero{margin-bottom:18px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}.cards article{border-left:6px solid #18a957}.cards article.attention{border-color:#e1a900}.cards article.danger{border-color:#d43737}.cards strong{display:block;font-size:32px;margin:10px 0}.panel{margin-top:18px}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.bar{height:18px;background:#e4eeee;border-radius:20px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:#18a957;transition:.4s}button{border:0;border-radius:11px;padding:11px 15px;margin:4px;background:#087f8c;color:white;font-weight:bold;cursor:pointer}.flow{font-size:20px;text-align:center}footer{text-align:center;padding:25px;color:#667}small{color:#667}canvas{width:100%}@media(max-width:700px){.two{grid-template-columns:1fr}main{padding:12px}}
+/* --- RESET E CONFIGURAÇÕES GLOBAIS --- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', Arial, sans-serif; /* Fonte mais moderna */
+    background: #0B1E36; /* Fundo Azul Escuro (Dark Mode) */
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Container para simular a largura de um celular */
+.app-container {
+    width: 100%;
+    max-width: 500px; /* Largura máxima de um smartphone */
+    background: #0B1E36;
+    padding-bottom: 80px; /* Espaço para a barra inferior */
+    position: relative;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* --- HEADER --- */
+header {
+    background: linear-gradient(135deg, #0B1E36, #152C4A);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+h1 {
+    margin: 0;
+    font-size: 20px;
+    color: #FFFFFF;
+}
+
+header p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    color: #A0AAB5;
+}
+
+#connect {
+    background: #152C4A;
+    border: 1px solid #2E8B57;
+    color: #2E8B57;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#connect:hover {
+    background: #2E8B57;
+    color: #FFFFFF;
+}
+
+/* --- MAIN E PAINÉIS --- */
+main {
+    padding: 20px;
+}
+
+.panel, .cards article {
+    background: #152C4A; /* Cor dos cards (Azul um pouco mais claro) */
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    margin-bottom: 18px;
+}
+
+.panel h2 {
+    font-size: 16px;
+    color: #FFFFFF;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* --- CARDS DE SENSORES --- */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.cards article {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    border-left: 4px solid #2E8B57; /* Borda verde padrão */
+    margin-bottom: 0;
+}
+
+.cards article.attention {
+    border-color: #F1C40F; /* Amarelo */
+}
+
+.cards article.danger {
+    border-color: #E74C3C; /* Vermelho */
+}
+
+.cards b {
+    font-size: 12px;
+    color: #A0AAB5;
+}
+
+.cards strong {
+    display: block;
+    font-size: 28px;
+    color: #FFFFFF;
+    margin: 8px 0;
+}
+
+.cards span {
+    font-size: 12px;
+    color: #A0AAB5;
+}
+
+/* --- BARRA DE SAÚDE --- */
+.bar {
+    height: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 15px 0;
+}
+
+.bar i {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: #2E8B57;
+    transition: width 0.4s ease, background-color 0.4s ease;
+    border-radius: 20px;
+}
+
+/* --- BOTÕES E FLUXO --- */
+button {
+    border: 0;
+    border-radius: 11px;
+    padding: 11px 15px;
+    margin: 4px;
+    background: #087f8c;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.demo-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.demo-buttons button {
+    flex: 1;
+    min-width: 100px;
+}
+
+.flow {
+    font-size: 14px;
+    text-align: center;
+    color: #A0AAB5;
+    line-height: 1.6;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #667;
+    font-size: 12px;
+}
+
+small {
+    color: #667;
+    font-size: 11px;
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* --- NAVEGAÇÃO INFERIOR (BOTTOM NAV) --- */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+    background: #152C4A;
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
+    z-index: 100;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #A0AAB5;
+    font-size: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-item.active {
+    color: #2E8B57;
+}
+
+.nav-item span {
+    margin-top: 4px;
+}
+
+/* --- ALERTAS --- */
+.alert-item {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+}
+
+.alert-item.success {
+    background: rgba(46, 139, 87, 0.2);
+    border-left: 4px solid #2E8B57;
+    color: #2E8B57;
+}
+
+.alert-item.warning {
+    background: rgba(241, 196, 15, 0.2);
+    border-left: 4px solid #F1C40F;
+    color: #F1C40F;
+}
+
+.alert-item.danger {
+    background: rgba(231, 76, 60, 0.2);
+    border-left: 4px solid #E74C3C;
+    color: #E74C3C;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 700px) {
+    .two {
+        grid-template-columns: 1fr;
+    }
+    main {
+        padding: 12px;
+    }
+    .app-container {
+        max-width: 100%;
+    }
+}

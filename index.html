@@ -1,15 +1,141 @@
-<!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RioVivo AI</title><link rel="stylesheet" href="style.css"></head>
-<body><header><div><h1>🌊 RioVivo AI</h1><p>Monitoramento inteligente do nosso rio</p></div><button id="connect">🔌 Conectar à boia</button></header>
-<main><section class="hero"><h2>Dados da água em tempo real</h2><p id="conn">Modo demonstração</p></section>
-<section class="cards">
-<article id="pc"><b>🧪 pH</b><strong id="ph">7.0</strong><span id="ps">Normal</span></article>
-<article id="tc"><b>💧 Turbidez</b><strong id="tu">20</strong><span>NTU (estimado)</span></article>
-<article id="tempC"><b>🌡️ Temperatura</b><strong id="te">24.0</strong><span>°C</span></article>
-<article id="lc"><b>📏 Nível</b><strong id="lv">35</strong><span>% do limite</span></article></section>
-<section class="panel"><h2>💚 Índice de Saúde do Rio: <span id="health">92</span>/100</h2><div class="bar"><i id="bar"></i></div><p id="hm">Condições normais.</p><small>Indicador criado para o protótipo.</small></section>
-<section class="two"><section class="panel"><h2>🤖 Análise</h2><p id="ai"></p></section><section class="panel"><h2>🚨 Alertas</h2><div id="alerts"></div></section></section>
-<section class="panel"><h2>📊 Histórico</h2><canvas id="chart" width="900" height="260"></canvas></section>
-<section class="panel"><h2>🎮 Demonstração</h2><button onclick="demo('normal')">🟢 Normal</button><button onclick="demo('attention')">🟡 Atenção</button><button onclick="demo('danger')">🔴 Crítico</button></section>
-<section class="panel"><h2>🔧 Fluxo</h2><p class="flow">🧪 Sensores → 🟦 Arduino → 📡 Comunicação → 📱 RioVivo AI</p></section></main>
-<footer>RioVivo AI • Protótipo educacional • Alvorada do Sul – PR</footer><script src="script.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RioVivo AI</title>
+    <!-- Link para o seu CSS existente -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Container Principal (Simula a tela do celular) -->
+    <div class="app-container">
+        
+        <!-- Cabeçalho (Header) -->
+        <header>
+            <div class="header-info">
+                <h1>🌊 RioVivo AI</h1>
+                <p>Monitoramento inteligente do nosso rio</p>
+            </div>
+            <!-- Botão que abre a janela de conexão serial (visto na sua 3ª imagem) -->
+            <button id="connect">🔌 Conectar à boia</button>
+        </header>
+
+        <main>
+            <!-- Painel de Status de Conexão -->
+            <section class="status-panel">
+                <p id="conn">Modo demonstração</p>
+                <span class="status-indicator">● Online</span>
+            </section>
+
+            <!-- Grid de Cards de Sensores em Tempo Real -->
+            <section class="cards">
+                <article id="pc">
+                    <b>🧪 pH</b>
+                    <strong id="ph">7.0</strong>
+                    <span id="ps">Normal</span>
+                </article>
+                <article id="tc">
+                    <b>💧 Turbidez</b>
+                    <strong id="tu">20</strong>
+                    <span>NTU (estimado)</span>
+                </article>
+                <article id="tempC">
+                    <b>🌡️ Temperatura</b>
+                    <strong id="te">24.0</strong>
+                    <span>°C</span>
+                </article>
+                <article id="lc">
+                    <b>📏 Nível</b>
+                    <strong id="lv">35</strong>
+                    <span>% do limite</span>
+                </article>
+            </section>
+
+            <!-- Painel do Índice de Saúde do Rio -->
+            <section class="panel">
+                <h2>💚 Índice de Saúde do Rio: <span id="health">92</span>/100</h2>
+                <div class="bar">
+                    <!-- A largura da barra é controlada pelo JS -->
+                    <i id="bar" style="width: 92%;"></i>
+                </div>
+                <p id="hm">Condições normais.</p>
+                <small>Indicador criado para o protótipo.</small>
+            </section>
+
+            <!-- Grid de Análise IA e Alertas -->
+            <section class="two">
+                <section class="panel">
+                    <h2>🤖 Análise IA</h2>
+                    <p id="ai">Aguardando dados dos sensores...</p>
+                </section>
+                <section class="panel">
+                    <h2>🚨 Alertas</h2>
+                    <div id="alerts">
+                        <!-- Alertas são inseridos aqui pelo JS -->
+                        <div class="alert-item success">✅ Sistema operando normalmente.</div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- Painel do Gráfico de Histórico -->
+            <section class="panel">
+                <h2>📊 Histórico</h2>
+                <!-- O gráfico é desenhado aqui pelo Chart.js -->
+                <canvas id="chart" width="400" height="200"></canvas>
+            </section>
+
+            <!-- Painel de Botões de Simulação -->
+            <section class="panel">
+                <h2>🎮 Demonstração</h2>
+                <div class="demo-buttons">
+                    <button onclick="demo('normal')">🟢 Normal</button>
+                    <button onclick="demo('attention')">🟡 Atenção</button>
+                    <button onclick="demo('danger')">🔴 Crítico</button>
+                </div>
+            </section>
+
+            <!-- Painel do Fluxo do Sistema -->
+            <section class="panel">
+                <h2>🔧 Fluxo</h2>
+                <p class="flow">🧪 Sensores → 🟦 Arduino → 📡 Comunicação → 📱 RioVivo AI</p>
+            </section>
+        </main>
+
+        <!-- Rodapé -->
+        <footer>
+            <p>RioVivo AI • Protótipo educacional • Alvorada do Sul – PR</p>
+        </footer>
+
+        <!-- Barra de Navegação Inferior (Bottom Nav) -->
+        <!-- Presente na imagem original, mas não apareceu nas suas capturas de tela -->
+        <nav class="bottom-nav">
+            <div class="nav-item active">
+                <span class="icon">🏠</span>
+                <span class="label">Início</span>
+            </div>
+            <div class="nav-item">
+                <span class="icon">🗺️</span>
+                <span class="label">Mapa</span>
+            </div>
+            <div class="nav-item">
+                <span class="icon">🚨</span>
+                <span class="label">Alertas</span>
+            </div>
+            <div class="nav-item">
+                <span class="icon">📊</span>
+                <span class="label">Relatórios</span>
+            </div>
+            <div class="nav-item">
+                <span class="icon">☰</span>
+                <span class="label">Mais</span>
+            </div>
+        </nav>
+
+    </div>
+
+    <!-- Link para o seu JavaScript existente -->
+    <script src="script.js"></script>
+</body>
+</html>
