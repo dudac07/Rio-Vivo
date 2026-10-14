@@ -1,406 +1,318 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RioVivo AI</title>
-    <style>
-        /* ===== RESET E ESTILOS GERAIS ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #0b1120; /* Fundo escuro igual ao da imagem */
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        /* Container principal (simula a tela do celular) */
-        .app-container {
-            width: 100%;
-            max-width: 480px;
-            background-color: #0f172a;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            padding-bottom: 70px; /* Espaço para o menu inferior */
-        }
-
-        /* ===== CABEÇALHO ===== */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: #0f172a;
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo-icon {
-            font-size: 24px;
-        }
-
-        .logo-text h1 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .logo-text p {
-            font-size: 11px;
-            color: #94a3b8;
-        }
-
-        .btn-conectar {
-            background-color: transparent;
-            border: 1px solid #22c55e;
-            color: #22c55e;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .btn-conectar:hover {
-            background-color: #22c55e;
-            color: #0f172a;
-        }
-
-        /* ===== CONTEÚDO DAS ABAS ===== */
-        .conteudo-aba {
-            padding: 0 20px;
-            flex: 1;
-            display: none; /* Esconde todas por padrão */
-        }
-
-        .conteudo-aba.ativa {
-            display: block; /* Mostra apenas a aba ativa */
-        }
-
-        /* Título do modo demonstração */
-        .modo-demonstracao {
-            font-size: 14px;
-            color: #94a3b8;
-            margin-bottom: 10px;
-        }
-
-        .status-online {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-
-        .status-online::before {
-            content: '';
-            display: block;
-            width: 8px;
-            height: 8px;
-            background-color: #22c55e;
-            border-radius: 50%;
-        }
-
-        /* ===== CARDS DE DADOS ===== */
-        .grid-cards {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .card {
-            background-color: #1e293b;
-            border-radius: 12px;
-            padding: 15px;
-            border: 1px solid #334155;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            color: #94a3b8;
-            margin-bottom: 8px;
-        }
-
-        .card-valor {
-            font-size: 28px;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .card-subtexto {
-            font-size: 11px;
-            color: #64748b;
-            margin-top: 4px;
-        }
-
-        /* Card Nível (ocupa a largura toda) */
-        .card-nivel {
-            grid-column: span 2;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .card-nivel .card-valor {
-            font-size: 32px;
-        }
-
-        /* ===== CARD DE SAÚDE DO RIO ===== */
-        .card-saude {
-            background-color: #1e293b;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #334155;
-        }
-
-        .card-saude h3 {
-            font-size: 16px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .barra-progresso {
-            width: 100%;
-            height: 10px;
-            background-color: #334155;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-bottom: 15px;
-        }
-
-        .barra-preenchimento {
-            width: 100%;
-            height: 100%;
-            background-color: #22c55e;
-            border-radius: 5px;
-        }
-
-        .condicoes-normais {
-            font-size: 14px;
-            font-weight: 600;
-            color: #ffffff;
-        }
-
-        .indicador-prototipo {
-            font-size: 10px;
-            color: #64748b;
-            margin-top: 10px;
-        }
-
-        /* ===== MENU INFERIOR (TABS) ===== */
-        .menu-inferior {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #0f172a;
-            border-top: 1px solid #1e293b;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            z-index: 100;
-        }
-
-        .btn-tab {
-            background: none;
-            border: none;
-            color: #64748b;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: 0.2s;
-            width: 60px;
-        }
-
-        .btn-tab .icone {
-            font-size: 20px;
-        }
-
-        .btn-tab.ativo {
-            color: #22c55e; /* Cor verde para a aba ativa */
-            font-weight: 600;
-        }
-
-        .btn-tab:hover {
-            color: #94a3b8;
-        }
-
-        .btn-tab.ativo:hover {
-            color: #22c55e;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RioVivo AI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+body { background-color: #0b1120; color: #fff; display: flex; justify-content: center; min-height: 100vh; }
+.app-container { width: 100%; max-width: 480px; background-color: #0f172a; min-height: 100vh; display: flex; flex-direction: column; position: relative; padding-bottom: 80px; }
+.header { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
+.logo-area { display: flex; align-items: center; gap: 10px; }
+.logo-icon { font-size: 24px; }
+.logo-text h1 { font-size: 18px; font-weight: 700; }
+.logo-text p { font-size: 11px; color: #94a3b8; }
+.btn-conectar { background-color: transparent; border: 1px solid #22c55e; color: #22c55e; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.btn-conectar:hover { background-color: #22c55e; color: #0f172a; }
+.conteudo-aba { padding: 0 20px; flex: 1; display: none; }
+.conteudo-aba.ativa { display: block; }
+.titulo-aba { margin-bottom: 15px; font-size: 20px; }
+.modo-demonstracao { font-size: 14px; color: #94a3b8; margin-bottom: 10px; }
+.status-online { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 15px; }
+.status-online::before { content: ''; width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: block; }
+.grid-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+.card { background-color: #1e293b; border-radius: 12px; padding: 15px; border: 1px solid #334155; min-height: 110px; display: flex; flex-direction: column; justify-content: center; }
+.card-header { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
+.card-valor { font-size: 26px; font-weight: 700; }
+.card-subtexto { font-size: 11px; color: #64748b; margin-top: 4px; }
+.card-nivel { grid-column: span 2; min-height: auto; }
+.card-nivel .card-valor { font-size: 32px; }
+.card-saude { background-color: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #334155; }
+.card-saude h3 { font-size: 15px; margin-bottom: 15px; }
+.barra-progresso { width: 100%; height: 10px; background-color: #334155; border-radius: 5px; overflow: hidden; margin-bottom: 15px; }
+.barra-preenchimento { width: 100%; height: 100%; background-color: #22c55e; }
+.condicoes-normais { font-size: 14px; font-weight: 600; }
+.indicador-prototipo { font-size: 10px; color: #64748b; margin-top: 10px; }
+.btn-buzzer-testar { background-color: #22c55e; color: #0f172a; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; }
+.btn-buzzer-parar { background-color: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 12px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; width: 100%; margin-top: 10px; }
+.menu-inferior { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background-color: #0f172a; border-top: 1px solid #1e293b; display: flex; justify-content: space-around; padding: 10px 0; z-index: 100; }
+.btn-tab { background: none; border: none; color: #64748b; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 11px; cursor: pointer; width: 60px; }
+.btn-tab .icone { font-size: 20px; }
+.btn-tab.ativo { color: #22c55e; font-weight: 600; }
+#lista-alertas li { padding: 6px 0; border-bottom: 1px solid #334155; }
+.mapa-estatico { width: 100%; height: 400px; border-radius: 12px; border: 1px solid #334155; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 14px; text-align: center; padding: 20px; position: relative; overflow: hidden; }
+.mapa-estatico::before { content: '📍'; font-size: 60px; margin-bottom: 10px; }
+</style>
 </head>
 <body>
 
-    <div class="app-container">
-        <!-- CABEÇALHO -->
-        <header class="header">
-            <div class="logo-area">
-                <div class="logo-icon">🌊</div>
-                <div class="logo-text">
-                    <h1>RioVivo AI</h1>
-                    <p>Monitoramento inteligente do nosso rio</p>
-                </div>
-            </div>
-            <button class="btn-conectar">🔗 Conectar à boia</button>
-        </header>
-
-        <!-- ================= ABA INÍCIO ================= -->
-        <div id="inicio" class="conteudo-aba ativa">
-            <p class="modo-demonstracao">Modo demonstração</p>
-            <div class="status-online">Online</div>
-
-            <div class="grid-cards">
-                <!-- Card pH -->
-                <div class="card">
-                    <div class="card-header">🧪 pH</div>
-                    <div class="card-valor">7.0</div>
-                    <div class="card-subtexto">Normal</div>
-                </div>
-
-                <!-- Card Turbidez -->
-                <div class="card">
-                    <div class="card-header">💧 Turbidez</div>
-                    <div class="card-valor">21</div>
-                    <div class="card-subtexto">NTU (estimado)</div>
-                </div>
-
-                <!-- Card Temperatura -->
-                <div class="card">
-                    <div class="card-header">🌡️ Temperatura</div>
-                    <div class="card-valor">23.9</div>
-                    <div class="card-subtexto">°C</div>
-                </div>
-
-                <!-- Card Nível (Largo) -->
-                <div class="card card-nivel">
-    <div class="card-header">📊 Nível</div>
-    <div class="card-valor" id="valor-nivel">35</div>
-    <div class="card-subtexto">% do limite</div>
-                </div>
-            </div>
-
-            <!-- Card Saúde do Rio -->
-            <div class="card-saude">
-                <h3>💚 Índice de Saúde do Rio: 100/100</h3>
-                <div class="barra-progresso">
-                    <div class="barra-preenchimento"></div>
-                </div>
-                <p class="condicoes-normais">Condições normais.</p>
-                <p class="indicador-prototipo">Indicador criado para o protótipo.</p>
+<div class="app-container">
+    <header class="header">
+        <div class="logo-area">
+            <div class="logo-icon">🌊</div>
+            <div class="logo-text">
+                <h1>RioVivo AI</h1>
+                <p>Monitoramento inteligente do nosso rio</p>
             </div>
         </div>
+        <button class="btn-conectar" id="btnConectar">🔗 Conectar à boia</button>
+    </header>
 
-        <!-- ================= ABA MAPA ================= -->
-        <div id="mapa" class="conteudo-aba">
-            <h2 style="margin-bottom: 15px;">🗺️ Mapa do Rio</h2>
-            <div class="card" style="height: 300px; display: flex; align-items: center; justify-content: center; color: #64748b;">
-                [Espaço para o mapa interativo]
+    <div id="inicio" class="conteudo-aba ativa">
+        <p class="modo-demonstracao">Modo demonstração</p>
+        <div class="status-online">Online</div>
+        <div class="grid-cards">
+            <div class="card">
+                <div class="card-header">🧪 pH</div>
+                <div class="card-valor" id="valor-ph">7.0</div>
+                <div class="card-subtexto" id="status-ph">Normal</div>
+            </div>
+            <div class="card">
+                <div class="card-header">💧 Turbidez</div>
+                <div class="card-valor" id="valor-turbidez">21</div>
+                <div class="card-subtexto">NTU (estimado)</div>
+            </div>
+            <div class="card">
+                <div class="card-header">🌡️ Temperatura</div>
+                <div class="card-valor" id="valor-temperatura">23.9</div>
+                <div class="card-subtexto">°C</div>
+            </div>
+            <div class="card card-nivel">
+                <div class="card-header">📊 Nível</div>
+                <div class="card-valor" id="valor-nivel">35</div>
+                <div class="card-subtexto">% do limite</div>
             </div>
         </div>
-
-        <!-- ================= ABA ALERTAS ================= -->
-        <div id="alertas" class="conteudo-aba">
-            <h2 style="margin-bottom: 15px;">🔔 Alertas</h2>
-            <div class="card" style="padding: 20px;">
-                <p style="color: #22c55e; font-weight: bold;">✅ Nenhum alerta no momento.</p>
-                <p style="color: #64748b; font-size: 13px; margin-top: 5px;">O rio está dentro dos parâmetros normais.</p>
-            </div>
+        <div class="card-saude">
+            <h3>💚 Índice de Saúde do Rio: 100/100</h3>
+            <div class="barra-progresso"><div class="barra-preenchimento"></div></div>
+            <p class="condicoes-normais">Condições normais.</p>
+            <p class="indicador-prototipo">Indicador criado para o protótipo.</p>
         </div>
-
-        <!-- ================= ABA RELATÓRIOS ================= -->
-        <div id="relatorios" class="conteudo-aba">
-            <h2 style="margin-bottom: 15px;">📈 Relatórios</h2>
-            <div class="card" style="height: 200px; display: flex; align-items: center; justify-content: center; color: #64748b;">
-                [Gráficos e histórico de dados]
-            </div>
-        </div>
-
-        <!-- ================= ABA MAIS ================= -->
-        <div id="mais" class="conteudo-aba">
-            <h2 style="margin-bottom: 15px;">⚙️ Mais Opções</h2>
-            <div class="card" style="padding: 20px;">
-                <p>Configurações</p>
-                <p style="color: #64748b; font-size: 13px; margin-top: 10px;">Sobre o projeto RioVivo AI</p>
-            </div>
-        </div>
-
-        <!-- ================= MENU INFERIOR ================= -->
-        <nav class="menu-inferior">
-            <button class="btn-tab ativo" onclick="mostrarAba('inicio', this)">
-                <span class="icone">🏠</span>
-                <span>Início</span>
-            </button>
-            <button class="btn-tab" onclick="mostrarAba('mapa', this)">
-                <span class="icone">🗺️</span>
-                <span>Mapa</span>
-            </button>
-            <button class="btn-tab" onclick="mostrarAba('alertas', this)">
-                <span class="icone">🔔</span>
-                <span>Alertas</span>
-            </button>
-            <button class="btn-tab" onclick="mostrarAba('relatorios', this)">
-                <span class="icone">📊</span>
-                <span>Relatórios</span>
-            </button>
-            <button class="btn-tab" onclick="mostrarAba('mais', this)">
-                <span class="icone">⚙️</span>
-                <span>Mais</span>
-            </button>
-        </nav>
     </div>
 
-    <!-- ================= JAVASCRIPT (LÓGICA DAS ABAS) ================= -->
-    <script>
-        function mostrarAba(idAba, botaoClicado) {
-            // 1. Esconde TODAS as abas
-            const todasAsAbas = document.querySelectorAll('.conteudo-aba');
-            todasAsAbas.forEach(aba => {
-                aba.classList.remove('ativa');
-            });
+    <div id="mapa" class="conteudo-aba">
+        <h2 class="titulo-aba">🗺️ Mapa do Rio</h2>
+        <div class="mapa-estatico">
+            <strong style="color:#fff; font-size: 16px;">Lago dos Patos</strong><br>
+            Alvorada do Sul - PR<br>
+            <span style="font-size: 11px; margin-top: 10px;">Coordenadas: -22.7833, -51.2333</span>
+        </div>
+        <div class="card" style="margin-top: 12px; padding: 15px;">
+            <p style="font-size: 13px; color: #94a3b8;">📍 Ponto de monitoramento:</p>
+            <p style="font-size: 15px; font-weight: 600; margin-top: 5px;">Boia RioVivo - Lago dos Patos</p>
+        </div>
+    </div>
 
-            // 2. Mostra a aba clicada
-            const abaSelecionada = document.getElementById(idAba);
-            if (abaSelecionada) {
-                abaSelecionada.classList.add('ativa');
-            }
+    <div id="alertas" class="conteudo-aba">
+        <h2 class="titulo-aba">🔔 Alertas</h2>
+        <div class="card" style="padding: 20px;">
+            <p style="color: #22c55e; font-weight: bold;" id="status-alerta">✅ Nenhum alerta no momento.</p>
+            <p style="color: #64748b; font-size: 13px; margin-top: 5px;" id="msg-alerta">O rio está dentro dos parâmetros normais.</p>
+        </div>
+        <div class="card" style="padding: 20px; margin-top: 12px;">
+            <h3 style="font-size: 15px; margin-bottom: 12px;">🔔 Buzzer Passivo</h3>
+            <p style="font-size: 12px; color: #94a3b8; margin-bottom: 15px;">Teste o alarme sonoro do sistema.</p>
+            <button id="btnTestarBuzzer" class="btn-buzzer-testar">▶️ Testar Buzzer</button>
+            <button id="btnPararBuzzer" class="btn-buzzer-parar">⏹️ Parar Buzzer</button>
+        </div>
+        <div class="card" style="padding: 20px; margin-top: 12px;">
+            <h3 style="font-size: 15px; margin-bottom: 12px;">📋 Histórico de Alertas</h3>
+            <ul id="lista-alertas" style="list-style: none; font-size: 12px; color: #94a3b8;">
+                <li>Nenhum alerta registrado.</li>
+            </ul>
+            <button id="btnLimparAlertas" class="btn-buzzer-parar" style="margin-top: 12px;">🗑️ Limpar Histórico</button>
+        </div>
+    </div>
 
-            // 3. Remove a classe 'ativo' de TODOS os botões
-            const todosOsBotoes = document.querySelectorAll('.btn-tab');
-            todosOsBotoes.forEach(botao => {
-                botao.classList.remove('ativo');
-            });
+    <div id="relatorios" class="conteudo-aba">
+        <h2 class="titulo-aba">📈 Relatórios</h2>
+        <div class="card" style="padding: 15px;">
+            <h3 style="font-size: 14px; margin-bottom: 10px;">pH — últimas leituras</h3>
+            <canvas id="grafico-ph" height="160"></canvas>
+        </div>
+        <div class="card" style="padding: 15px; margin-top: 12px;">
+            <h3 style="font-size: 14px; margin-bottom: 10px;">Temperatura — últimas leituras</h3>
+            <canvas id="grafico-temp" height="160"></canvas>
+        </div>
+    </div>
 
-            // 4. Adiciona a classe 'ativo' ao botão clicado
-            if (botaoClicado) {
-                botaoClicado.classList.add('ativo');
+    <div id="mais" class="conteudo-aba">
+        <h2 class="titulo-aba">⚙️ Mais Opções</h2>
+        <div class="card" style="padding: 20px;">
+            <p style="font-weight: 600;">Sobre o RioVivo AI</p>
+            <p style="color: #64748b; font-size: 13px; margin-top: 10px;">
+                Protótipo de monitoramento inteligente do rio com sensores simulados, buzzer passivo e gráficos em tempo real.
+            </p>
+            <p style="color: #64748b; font-size: 11px; margin-top: 15px;">Versão 1.0 · 2026</p>
+        </div>
+    </div>
+
+    <nav class="menu-inferior">
+        <button class="btn-tab ativo" onclick="mostrarAba('inicio', this)">
+            <span class="icone">🏠</span><span>Início</span>
+        </button>
+        <button class="btn-tab" onclick="mostrarAba('mapa', this)">
+            <span class="icone">🗺️</span><span>Mapa</span>
+        </button>
+        <button class="btn-tab" onclick="mostrarAba('alertas', this)">
+            <span class="icone">🔔</span><span>Alertas</span>
+        </button>
+        <button class="btn-tab" onclick="mostrarAba('relatorios', this)">
+            <span class="icone">📊</span><span>Relatórios</span>
+        </button>
+        <button class="btn-tab" onclick="mostrarAba('mais', this)">
+            <span class="icone">⚙️</span><span>Mais</span>
+        </button>
+    </nav>
+</div>
+
+<script>
+function mostrarAba(idAba, botaoClicado) {
+    document.querySelectorAll('.conteudo-aba').forEach(a => a.classList.remove('ativa'));
+    document.getElementById(idAba).classList.add('ativa');
+    document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('ativo'));
+    botaoClicado.classList.add('ativo');
+}
+
+const btnConectar = document.getElementById('btnConectar');
+btnConectar.addEventListener('click', () => {
+    if (btnConectar.textContent.includes('Conectado')) {
+        btnConectar.textContent = '🔗 Conectar à boia';
+        btnConectar.style.backgroundColor = 'transparent';
+        btnConectar.style.color = '#22c55e';
+    } else {
+        btnConectar.textContent = '✅ Conectado';
+        btnConectar.style.backgroundColor = '#22c55e';
+        btnConectar.style.color = '#0f172a';
+    }
+});
+
+let ctxAudio = null, oscAtivo = null;
+function tocarBuzzer(freq = 2000, dur = 300) {
+    try {
+        if (!ctxAudio) ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctxAudio.state === 'suspended') ctxAudio.resume();
+        const o = ctxAudio.createOscillator(), g = ctxAudio.createGain();
+        o.type = 'square'; o.frequency.value = freq;
+        g.gain.setValueAtTime(0.2, ctxAudio.currentTime);
+        o.connect(g); g.connect(ctxAudio.destination);
+        o.start(); o.stop(ctxAudio.currentTime + dur / 1000);
+    } catch (e) { console.error(e); }
+}
+function iniciarBuzzerContinuo() {
+    if (!ctxAudio) ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+    if (ctxAudio.state === 'suspended') ctxAudio.resume();
+    if (oscAtivo) return;
+    oscAtivo = ctxAudio.createOscillator();
+    const g = ctxAudio.createGain();
+    oscAtivo.type = 'square'; oscAtivo.frequency.value = 2000;
+    g.gain.value = 0.12;
+    oscAtivo.connect(g); g.connect(ctxAudio.destination);
+    oscAtivo.start();
+}
+function pararBuzzer() {
+    if (oscAtivo) { try { oscAtivo.stop(); } catch(e){} oscAtivo = null; }
+}
+document.getElementById('btnTestarBuzzer').addEventListener('click', () => {
+    tocarBuzzer(2000, 200);
+    setTimeout(() => tocarBuzzer(2000, 200), 350);
+    setTimeout(() => tocarBuzzer(2000, 200), 700);
+});
+document.getElementById('btnPararBuzzer').addEventListener('click', pararBuzzer);
+
+const alertas = [];
+function registrarAlerta(msg) {
+    const hora = new Date().toLocaleTimeString('pt-BR');
+    alertas.unshift(`${hora} — ${msg}`);
+    if (alertas.length > 10) alertas.pop();
+    const lista = document.getElementById('lista-alertas');
+    lista.innerHTML = alertas.length ? alertas.map(a => `<li>${a}</li>`).join('') : '<li>Nenhum alerta.</li>';
+}
+document.getElementById('btnLimparAlertas').addEventListener('click', () => {
+    alertas.length = 0;
+    document.getElementById('lista-alertas').innerHTML = '<li>Nenhum alerta.</li>';
+});
+
+let ultimoEstado = false;
+function verificarAlerta(ph) {
+    const fora = ph < 6.0 || ph > 8.5;
+    const st = document.getElementById('status-alerta');
+    const msg = document.getElementById('msg-alerta');
+    const stPh = document.getElementById('status-ph');
+
+    if (fora) {
+        if (!ultimoEstado) { registrarAlerta(`pH fora: ${ph}`); iniciarBuzzerContinuo(); }
+        st.textContent = `🚨 Alerta! pH: ${ph}`; st.style.color = '#ef4444';
+        msg.textContent = 'pH fora da faixa segura (6.0 a 8.5).';
+        stPh.textContent = 'Fora do normal'; stPh.style.color = '#ef4444';
+    } else {
+        if (ultimoEstado) pararBuzzer();
+        st.textContent = '✅ Nenhum alerta no momento.'; st.style.color = '#22c55e';
+        msg.textContent = 'O rio está dentro dos parâmetros normais.';
+        stPh.textContent = 'Normal'; stPh.style.color = '#64748b';
+    }
+    ultimoEstado = fora;
+}
+
+let gPh = null, gTemp = null;
+function iniciarGraficos() {
+    const opt = {
+        type: 'line',
+        options: {
+            responsive: true, maintainAspectRatio: false, animation: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#334155' } },
+                y: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#334155' } }
             }
         }
-    </script>
+    };
+    gPh = new Chart(document.getElementById('grafico-ph'), {
+        ...opt,
+        data: { labels: [], datasets: [{ data: [], borderColor: '#22c55e', backgroundColor: 'rgba(34,197,94,0.15)', tension: 0.3, fill: true, pointRadius: 2 }] }
+    });
+    gTemp = new Chart(document.getElementById('grafico-temp'), {
+        ...opt,
+        data: { labels: [], datasets: [{ data: [], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.15)', tension: 0.3, fill: true, pointRadius: 2 }] }
+    });
+}
+function atualizarGraficos(ph, temp) {
+    const hora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    if (gPh) {
+        gPh.data.labels.push(hora); gPh.data.datasets[0].data.push(ph);
+        if (gPh.data.labels.length > 15) { gPh.data.labels.shift(); gPh.data.datasets[0].data.shift(); }
+        gPh.update('none');
+    }
+    if (gTemp) {
+        gTemp.data.labels.push(hora); gTemp.data.datasets[0].data.push(parseFloat(temp));
+        if (gTemp.data.labels.length > 15) { gTemp.data.labels.shift(); gTemp.data.datasets[0].data.shift(); }
+        gTemp.update('none');
+    }
+}
 
+function atualizarSensores() {
+    const ph = parseFloat((6.8 + Math.random() * 0.6).toFixed(1));
+    const turb = Math.floor(18 + Math.random() * 8);
+    const temp = (22.5 + Math.random() * 3).toFixed(1);
+    const niv = Math.floor(30 + Math.random() * 10);
+
+    document.getElementById('valor-ph').textContent = ph;
+    document.getElementById('valor-turbidez').textContent = turb;
+    document.getElementById('valor-temperatura').textContent = temp;
+    document.getElementById('valor-nivel').textContent = niv;
+
+    verificarAlerta(ph);
+    atualizarGraficos(ph, temp);
+}
+
+window.addEventListener('load', () => {
+    iniciarGraficos();
+    setTimeout(atualizarSensores, 500);
+    setInterval(atualizarSensores, 4000);
+});
+</script>
 </body>
 </html>
