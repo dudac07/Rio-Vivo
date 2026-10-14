@@ -1,269 +1,258 @@
-/* --- RESET E CONFIGURAÇÕES GLOBAIS --- */
+/* ===== RESET E ESTILOS GERAIS ===== */
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    margin: 0;
-    font-family: 'Inter', Arial, sans-serif; /* Fonte mais moderna */
-    background: #0B1E36; /* Fundo Azul Escuro (Dark Mode) */
-    color: #FFFFFF;
+    background-color: #0b1120;
+    color: #ffffff;
     display: flex;
     justify-content: center;
     min-height: 100vh;
 }
 
-/* Container para simular a largura de um celular */
+/* Container principal (simula a tela do celular) */
 .app-container {
     width: 100%;
-    max-width: 500px; /* Largura máxima de um smartphone */
-    background: #0B1E36;
-    padding-bottom: 80px; /* Espaço para a barra inferior */
+    max-width: 480px;
+    background-color: #0f172a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     position: relative;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    padding-bottom: 70px;
 }
 
-/* --- HEADER --- */
-header {
-    background: linear-gradient(135deg, #0B1E36, #152C4A);
-    padding: 20px;
+/* ===== CABEÇALHO ===== */
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding: 20px;
+    background-color: #0f172a;
 }
 
-h1 {
-    margin: 0;
-    font-size: 20px;
-    color: #FFFFFF;
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-header p {
-    margin: 4px 0 0;
-    font-size: 12px;
-    color: #A0AAB5;
+.logo-icon {
+    font-size: 24px;
 }
 
-#connect {
-    background: #152C4A;
-    border: 1px solid #2E8B57;
-    color: #2E8B57;
-    padding: 8px 12px;
+.logo-text h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.logo-text p {
+    font-size: 11px;
+    color: #94a3b8;
+}
+
+.btn-conectar {
+    background-color: transparent;
+    border: 1px solid #22c55e;
+    color: #22c55e;
+    padding: 8px 16px;
     border-radius: 20px;
     font-size: 12px;
+    font-weight: 600;
     cursor: pointer;
     transition: 0.3s;
 }
 
-#connect:hover {
-    background: #2E8B57;
-    color: #FFFFFF;
+.btn-conectar:hover {
+    background-color: #22c55e;
+    color: #0f172a;
 }
 
-/* --- MAIN E PAINÉIS --- */
-main {
-    padding: 20px;
+/* ===== CONTEÚDO DAS ABAS ===== */
+.conteudo-aba {
+    padding: 0 20px;
+    flex: 1;
+    display: none;
 }
 
-.panel, .cards article {
-    background: #152C4A; /* Cor dos cards (Azul um pouco mais claro) */
-    border-radius: 18px;
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    margin-bottom: 18px;
+.conteudo-aba.ativa {
+    display: block;
 }
 
-.panel h2 {
-    font-size: 16px;
-    color: #FFFFFF;
-    margin-top: 0;
+.titulo-aba {
     margin-bottom: 15px;
 }
 
-/* --- CARDS DE SENSORES --- */
-.cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-    margin-bottom: 18px;
-}
-
-.cards article {
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    border-left: 4px solid #2E8B57; /* Borda verde padrão */
-    margin-bottom: 0;
-}
-
-.cards article.attention {
-    border-color: #F1C40F; /* Amarelo */
-}
-
-.cards article.danger {
-    border-color: #E74C3C; /* Vermelho */
-}
-
-.cards b {
-    font-size: 12px;
-    color: #A0AAB5;
-}
-
-.cards strong {
-    display: block;
-    font-size: 28px;
-    color: #FFFFFF;
-    margin: 8px 0;
-}
-
-.cards span {
-    font-size: 12px;
-    color: #A0AAB5;
-}
-
-/* --- BARRA DE SAÚDE --- */
-.bar {
-    height: 10px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 20px;
-    overflow: hidden;
-    margin: 15px 0;
-}
-
-.bar i {
-    display: block;
-    height: 100%;
-    width: 0;
-    background: #2E8B57;
-    transition: width 0.4s ease, background-color 0.4s ease;
-    border-radius: 20px;
-}
-
-/* --- BOTÕES E FLUXO --- */
-button {
-    border: 0;
-    border-radius: 11px;
-    padding: 11px 15px;
-    margin: 4px;
-    background: #087f8c;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    opacity: 0.8;
-}
-
-.demo-buttons {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.demo-buttons button {
-    flex: 1;
-    min-width: 100px;
-}
-
-.flow {
+/* Título do modo demonstração */
+.modo-demonstracao {
     font-size: 14px;
-    text-align: center;
-    color: #A0AAB5;
-    line-height: 1.6;
+    color: #94a3b8;
+    margin-bottom: 10px;
 }
 
-footer {
-    text-align: center;
-    padding: 20px;
-    color: #667;
-    font-size: 12px;
-}
-
-small {
-    color: #667;
-    font-size: 11px;
-}
-
-canvas {
-    width: 100% !important;
-    height: auto !important;
-}
-
-/* --- NAVEGAÇÃO INFERIOR (BOTTOM NAV) --- */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    max-width: 500px;
-    background: #152C4A;
+.status-online {
     display: flex;
-    justify-content: space-around;
-    padding: 12px 0;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.5);
-    z-index: 100;
-}
-
-.nav-item {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    color: #A0AAB5;
-    font-size: 10px;
-    cursor: pointer;
-    transition: 0.3s;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 15px;
 }
 
-.nav-item.active {
-    color: #2E8B57;
+.status-online::before {
+    content: '';
+    display: block;
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
 }
 
-.nav-item span {
+/* ===== CARDS DE DADOS ===== */
+.grid-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.card {
+    background-color: #1e293b;
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid #334155;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #94a3b8;
+    margin-bottom: 8px;
+}
+
+.card-valor {
+    font-size: 28px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.card-subtexto {
+    font-size: 11px;
+    color: #64748b;
     margin-top: 4px;
 }
 
-/* --- ALERTAS --- */
-.alert-item {
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 8px;
-    font-size: 12px;
+.card-nivel {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
-.alert-item.success {
-    background: rgba(46, 139, 87, 0.2);
-    border-left: 4px solid #2E8B57;
-    color: #2E8B57;
+.card-nivel .card-valor {
+    font-size: 32px;
 }
 
-.alert-item.warning {
-    background: rgba(241, 196, 15, 0.2);
-    border-left: 4px solid #F1C40F;
-    color: #F1C40F;
+.placeholder {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
 }
 
-.alert-item.danger {
-    background: rgba(231, 76, 60, 0.2);
-    border-left: 4px solid #E74C3C;
-    color: #E74C3C;
+/* ===== CARD DE SAÚDE DO RIO ===== */
+.card-saude {
+    background-color: #1e293b;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #334155;
 }
 
-/* --- RESPONSIVIDADE --- */
-@media (max-width: 700px) {
-    .two {
-        grid-template-columns: 1fr;
-    }
-    main {
-        padding: 12px;
-    }
-    .app-container {
-        max-width: 100%;
-    }
+.card-saude h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.barra-progresso {
+    width: 100%;
+    height: 10px;
+    background-color: #334155;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.barra-preenchimento {
+    width: 100%;
+    height: 100%;
+    background-color: #22c55e;
+    border-radius: 5px;
+}
+
+.condicoes-normais {
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.indicador-prototipo {
+    font-size: 10px;
+    color: #64748b;
+    margin-top: 10px;
+}
+
+/* ===== MENU INFERIOR (TABS) ===== */
+.menu-inferior {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #0f172a;
+    border-top: 1px solid #1e293b;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 100;
+}
+
+.btn-tab {
+    background: none;
+    border: none;
+    color: #64748b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: 0.2s;
+    width: 60px;
+}
+
+.btn-tab .icone {
+    font-size: 20px;
+}
+
+.btn-tab.ativo {
+    color: #22c55e;
+    font-weight: 600;
+}
+
+.btn-tab:hover {
+    color: #94a3b8;
+}
+
+.btn-tab.ativo:hover {
+    color: #22c55e;
 }
