@@ -1,10 +1,4 @@
-/* ===== RESET E ESTILOS GERAIS ===== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
 
 body {
     background-color: #0b1120;
@@ -14,7 +8,6 @@ body {
     min-height: 100vh;
 }
 
-/* Container principal (simula a tela do celular) */
 .app-container {
     width: 100%;
     max-width: 480px;
@@ -23,201 +16,97 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
-    padding-bottom: 70px;
+    padding-bottom: 80px;
 }
 
-/* ===== CABEÇALHO ===== */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #0f172a;
-}
-
-.logo-area {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo-icon {
-    font-size: 24px;
-}
-
-.logo-text h1 {
-    font-size: 18px;
-    font-weight: 700;
-    color: #ffffff;
-}
-
-.logo-text p {
-    font-size: 11px;
-    color: #94a3b8;
-}
+.header { display: flex; justify-content: space-between; align-items: center; padding: 20px; }
+.logo-area { display: flex; align-items: center; gap: 10px; }
+.logo-icon { font-size: 24px; }
+.logo-text h1 { font-size: 18px; font-weight: 700; }
+.logo-text p { font-size: 11px; color: #94a3b8; }
 
 .btn-conectar {
     background-color: transparent;
     border: 1px solid #22c55e;
     color: #22c55e;
-    padding: 8px 16px;
+    padding: 8px 14px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
     cursor: pointer;
-    transition: 0.3s;
+    white-space: nowrap;
 }
+.btn-conectar:hover { background-color: #22c55e; color: #0f172a; }
 
-.btn-conectar:hover {
-    background-color: #22c55e;
-    color: #0f172a;
-}
-
-/* ===== CONTEÚDO DAS ABAS ===== */
-.conteudo-aba {
-    padding: 0 20px;
-    flex: 1;
-    display: none;
-}
-
-.conteudo-aba.ativa {
-    display: block;
-}
-
-.titulo-aba {
-    margin-bottom: 15px;
-}
-
-/* Título do modo demonstração */
-.modo-demonstracao {
-    font-size: 14px;
-    color: #94a3b8;
-    margin-bottom: 10px;
-}
-
-.status-online {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    margin-bottom: 15px;
-}
-
+.conteudo-aba { padding: 0 20px; flex: 1; display: none; }
+.conteudo-aba.ativa { display: block; }
+.titulo-aba { margin-bottom: 15px; font-size: 20px; }
+.modo-demonstracao { font-size: 14px; color: #94a3b8; margin-bottom: 10px; }
+.status-online { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 15px; }
 .status-online::before {
     content: '';
-    display: block;
-    width: 8px;
-    height: 8px;
+    width: 8px; height: 8px;
     background-color: #22c55e;
     border-radius: 50%;
+    display: block;
 }
 
-/* ===== CARDS DE DADOS ===== */
-.grid-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
+.grid-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
 .card {
     background-color: #1e293b;
     border-radius: 12px;
     padding: 15px;
     border: 1px solid #334155;
-}
-
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: #94a3b8;
-    margin-bottom: 8px;
-}
-
-.card-valor {
-    font-size: 28px;
-    font-weight: 700;
-    color: #ffffff;
-}
-
-.card-subtexto {
-    font-size: 11px;
-    color: #64748b;
-    margin-top: 4px;
-}
-
-.card-nivel {
-    grid-column: span 2;
+    min-height: 110px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
-}
-
-.card-nivel .card-valor {
-    font-size: 32px;
-}
-
-.placeholder {
-    height: 200px;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    color: #64748b;
 }
+.card-header { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
+.card-valor { font-size: 26px; font-weight: 700; }
+.card-subtexto { font-size: 11px; color: #64748b; margin-top: 4px; }
+.card-nivel { grid-column: span 2; min-height: auto; }
+.card-nivel .card-valor { font-size: 32px; }
 
-/* ===== CARD DE SAÚDE DO RIO ===== */
-.card-saude {
-    background-color: #1e293b;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #334155;
-}
+.card-saude { background-color: #1e293b; border-radius: 12px; padding: 20px; margin-bottom: 20px; border: 1px solid #334155; }
+.card-saude h3 { font-size: 15px; margin-bottom: 15px; }
+.barra-progresso { width: 100%; height: 10px; background-color: #334155; border-radius: 5px; overflow: hidden; margin-bottom: 15px; }
+.barra-preenchimento { width: 100%; height: 100%; background-color: #22c55e; }
+.condicoes-normais { font-size: 14px; font-weight: 600; }
+.indicador-prototipo { font-size: 10px; color: #64748b; margin-top: 10px; }
 
-.card-saude h3 {
-    font-size: 16px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.barra-progresso {
-    width: 100%;
-    height: 10px;
-    background-color: #334155;
-    border-radius: 5px;
-    overflow: hidden;
-    margin-bottom: 15px;
-}
-
-.barra-preenchimento {
-    width: 100%;
-    height: 100%;
+.btn-buzzer-testar {
     background-color: #22c55e;
-    border-radius: 5px;
+    color: #0f172a;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
 }
-
-.condicoes-normais {
-    font-size: 14px;
-    font-weight: 600;
-    color: #ffffff;
-}
-
-.indicador-prototipo {
-    font-size: 10px;
-    color: #64748b;
+.btn-buzzer-parar {
+    background-color: transparent;
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
     margin-top: 10px;
 }
 
-/* ===== MENU INFERIOR (TABS) ===== */
+#mapa-real { width: 100%; height: 400px; border-radius: 12px; border: 1px solid #334155; overflow: hidden; }
+.leaflet-popup-content-wrapper { background-color: #1e293b; color: #fff; }
+
 .menu-inferior {
-    position: absolute;
+    position: fixed;
     bottom: 0;
-    left: 0;
+    left: 50%;
+    transform: translateX(-50%);
     width: 100%;
+    max-width: 480px;
     background-color: #0f172a;
     border-top: 1px solid #1e293b;
     display: flex;
@@ -225,7 +114,6 @@ body {
     padding: 10px 0;
     z-index: 100;
 }
-
 .btn-tab {
     background: none;
     border: none;
@@ -236,23 +124,9 @@ body {
     gap: 4px;
     font-size: 11px;
     cursor: pointer;
-    transition: 0.2s;
     width: 60px;
 }
+.btn-tab .icone { font-size: 20px; }
+.btn-tab.ativo { color: #22c55e; font-weight: 600; }
 
-.btn-tab .icone {
-    font-size: 20px;
-}
-
-.btn-tab.ativo {
-    color: #22c55e;
-    font-weight: 600;
-}
-
-.btn-tab:hover {
-    color: #94a3b8;
-}
-
-.btn-tab.ativo:hover {
-    color: #22c55e;
-}
+#lista-alertas li { padding: 6px 0; border-bottom: 1px solid #334155; }
