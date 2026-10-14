@@ -4,138 +4,403 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RioVivo AI</title>
-    <!-- Link para o seu CSS existente -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ===== RESET E ESTILOS GERAIS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b1120; /* Fundo escuro igual ao da imagem */
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Container principal (simula a tela do celular) */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: #0f172a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding-bottom: 70px; /* Espaço para o menu inferior */
+        }
+
+        /* ===== CABEÇALHO ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #0f172a;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+        }
+
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .btn-conectar {
+            background-color: transparent;
+            border: 1px solid #22c55e;
+            color: #22c55e;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-conectar:hover {
+            background-color: #22c55e;
+            color: #0f172a;
+        }
+
+        /* ===== CONTEÚDO DAS ABAS ===== */
+        .conteudo-aba {
+            padding: 0 20px;
+            flex: 1;
+            display: none; /* Esconde todas por padrão */
+        }
+
+        .conteudo-aba.ativa {
+            display: block; /* Mostra apenas a aba ativa */
+        }
+
+        /* Título do modo demonstração */
+        .modo-demonstracao {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .status-online {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .status-online::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 8px;
+            background-color: #22c55e;
+            border-radius: 50%;
+        }
+
+        /* ===== CARDS DE DADOS ===== */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background-color: #1e293b;
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid #334155;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .card-valor {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .card-subtexto {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* Card Nível (ocupa a largura toda) */
+        .card-nivel {
+            grid-column: span 2;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .card-nivel .card-valor {
+            font-size: 32px;
+        }
+
+        /* ===== CARD DE SAÚDE DO RIO ===== */
+        .card-saude {
+            background-color: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+
+        .card-saude h3 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .barra-progresso {
+            width: 100%;
+            height: 10px;
+            background-color: #334155;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .barra-preenchimento {
+            width: 100%;
+            height: 100%;
+            background-color: #22c55e;
+            border-radius: 5px;
+        }
+
+        .condicoes-normais {
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .indicador-prototipo {
+            font-size: 10px;
+            color: #64748b;
+            margin-top: 10px;
+        }
+
+        /* ===== MENU INFERIOR (TABS) ===== */
+        .menu-inferior {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #0f172a;
+            border-top: 1px solid #1e293b;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            z-index: 100;
+        }
+
+        .btn-tab {
+            background: none;
+            border: none;
+            color: #64748b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 60px;
+        }
+
+        .btn-tab .icone {
+            font-size: 20px;
+        }
+
+        .btn-tab.ativo {
+            color: #22c55e; /* Cor verde para a aba ativa */
+            font-weight: 600;
+        }
+
+        .btn-tab:hover {
+            color: #94a3b8;
+        }
+
+        .btn-tab.ativo:hover {
+            color: #22c55e;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Container Principal (Simula a tela do celular) -->
     <div class="app-container">
-        
-        <!-- Cabeçalho (Header) -->
-        <header>
-            <div class="header-info">
-                <h1>🌊 RioVivo AI</h1>
-                <p>Monitoramento inteligente do nosso rio</p>
+        <!-- CABEÇALHO -->
+        <header class="header">
+            <div class="logo-area">
+                <div class="logo-icon">🌊</div>
+                <div class="logo-text">
+                    <h1>RioVivo AI</h1>
+                    <p>Monitoramento inteligente do nosso rio</p>
+                </div>
             </div>
-            <!-- Botão que abre a janela de conexão serial (visto na sua 3ª imagem) -->
-            <button id="connect">🔌 Conectar à boia</button>
+            <button class="btn-conectar">🔗 Conectar à boia</button>
         </header>
 
-        <main>
-            <!-- Painel de Status de Conexão -->
-            <section class="status-panel">
-                <p id="conn">Modo demonstração</p>
-                <span class="status-indicator">● Online</span>
-            </section>
+        <!-- ================= ABA INÍCIO ================= -->
+        <div id="inicio" class="conteudo-aba ativa">
+            <p class="modo-demonstracao">Modo demonstração</p>
+            <div class="status-online">Online</div>
 
-            <!-- Grid de Cards de Sensores em Tempo Real -->
-            <section class="cards">
-                <article id="pc">
-                    <b>🧪 pH</b>
-                    <strong id="ph">7.0</strong>
-                    <span id="ps">Normal</span>
-                </article>
-                <article id="tc">
-                    <b>💧 Turbidez</b>
-                    <strong id="tu">20</strong>
-                    <span>NTU (estimado)</span>
-                </article>
-                <article id="tempC">
-                    <b>🌡️ Temperatura</b>
-                    <strong id="te">24.0</strong>
-                    <span>°C</span>
-                </article>
-                <article id="lc">
-                    <b>📏 Nível</b>
-                    <strong id="lv">35</strong>
-                    <span>% do limite</span>
-                </article>
-            </section>
-
-            <!-- Painel do Índice de Saúde do Rio -->
-            <section class="panel">
-                <h2>💚 Índice de Saúde do Rio: <span id="health">92</span>/100</h2>
-                <div class="bar">
-                    <!-- A largura da barra é controlada pelo JS -->
-                    <i id="bar" style="width: 92%;"></i>
+            <div class="grid-cards">
+                <!-- Card pH -->
+                <div class="card">
+                    <div class="card-header">🧪 pH</div>
+                    <div class="card-valor">7.0</div>
+                    <div class="card-subtexto">Normal</div>
                 </div>
-                <p id="hm">Condições normais.</p>
-                <small>Indicador criado para o protótipo.</small>
-            </section>
 
-            <!-- Grid de Análise IA e Alertas -->
-            <section class="two">
-                <section class="panel">
-                    <h2>🤖 Análise IA</h2>
-                    <p id="ai">Aguardando dados dos sensores...</p>
-                </section>
-                <section class="panel">
-                    <h2>🚨 Alertas</h2>
-                    <div id="alerts">
-                        <!-- Alertas são inseridos aqui pelo JS -->
-                        <div class="alert-item success">✅ Sistema operando normalmente.</div>
-                    </div>
-                </section>
-            </section>
-
-            <!-- Painel do Gráfico de Histórico -->
-            <section class="panel">
-                <h2>📊 Histórico</h2>
-                <!-- O gráfico é desenhado aqui pelo Chart.js -->
-                <canvas id="chart" width="400" height="200"></canvas>
-            </section>
-
-            <!-- Painel de Botões de Simulação -->
-            <section class="panel">
-                <h2>🎮 Demonstração</h2>
-                <div class="demo-buttons">
-                    <button onclick="demo('normal')">🟢 Normal</button>
-                    <button onclick="demo('attention')">🟡 Atenção</button>
-                    <button onclick="demo('danger')">🔴 Crítico</button>
+                <!-- Card Turbidez -->
+                <div class="card">
+                    <div class="card-header">💧 Turbidez</div>
+                    <div class="card-valor">21</div>
+                    <div class="card-subtexto">NTU (estimado)</div>
                 </div>
-            </section>
 
-            <!-- Painel do Fluxo do Sistema -->
-            <section class="panel">
-                <h2>🔧 Fluxo</h2>
-                <p class="flow">🧪 Sensores → 🟦 Arduino → 📡 Comunicação → 📱 RioVivo AI</p>
-            </section>
-        </main>
+                <!-- Card Temperatura -->
+                <div class="card">
+                    <div class="card-header">🌡️ Temperatura</div>
+                    <div class="card-valor">23.9</div>
+                    <div class="card-subtexto">°C</div>
+                </div>
 
-        <!-- Rodapé -->
-        <footer>
-            <p>RioVivo AI • Protótipo educacional • Alvorada do Sul – PR</p>
-        </footer>
+                <!-- Card Nível (Largo) -->
+                <div class="card card-nivel">
+    <div class="card-header">📊 Nível</div>
+    <div class="card-valor" id="valor-nivel">35</div>
+    <div class="card-subtexto">% do limite</div>
+                </div>
+            </div>
 
-        <!-- Barra de Navegação Inferior (Bottom Nav) -->
-        <!-- Presente na imagem original, mas não apareceu nas suas capturas de tela -->
-        <nav class="bottom-nav">
-            <div class="nav-item active">
-                <span class="icon">🏠</span>
-                <span class="label">Início</span>
+            <!-- Card Saúde do Rio -->
+            <div class="card-saude">
+                <h3>💚 Índice de Saúde do Rio: 100/100</h3>
+                <div class="barra-progresso">
+                    <div class="barra-preenchimento"></div>
+                </div>
+                <p class="condicoes-normais">Condições normais.</p>
+                <p class="indicador-prototipo">Indicador criado para o protótipo.</p>
             </div>
-            <div class="nav-item">
-                <span class="icon">🗺️</span>
-                <span class="label">Mapa</span>
+        </div>
+
+        <!-- ================= ABA MAPA ================= -->
+        <div id="mapa" class="conteudo-aba">
+            <h2 style="margin-bottom: 15px;">🗺️ Mapa do Rio</h2>
+            <div class="card" style="height: 300px; display: flex; align-items: center; justify-content: center; color: #64748b;">
+                [Espaço para o mapa interativo]
             </div>
-            <div class="nav-item">
-                <span class="icon">🚨</span>
-                <span class="label">Alertas</span>
+        </div>
+
+        <!-- ================= ABA ALERTAS ================= -->
+        <div id="alertas" class="conteudo-aba">
+            <h2 style="margin-bottom: 15px;">🔔 Alertas</h2>
+            <div class="card" style="padding: 20px;">
+                <p style="color: #22c55e; font-weight: bold;">✅ Nenhum alerta no momento.</p>
+                <p style="color: #64748b; font-size: 13px; margin-top: 5px;">O rio está dentro dos parâmetros normais.</p>
             </div>
-            <div class="nav-item">
-                <span class="icon">📊</span>
-                <span class="label">Relatórios</span>
+        </div>
+
+        <!-- ================= ABA RELATÓRIOS ================= -->
+        <div id="relatorios" class="conteudo-aba">
+            <h2 style="margin-bottom: 15px;">📈 Relatórios</h2>
+            <div class="card" style="height: 200px; display: flex; align-items: center; justify-content: center; color: #64748b;">
+                [Gráficos e histórico de dados]
             </div>
-            <div class="nav-item">
-                <span class="icon">☰</span>
-                <span class="label">Mais</span>
+        </div>
+
+        <!-- ================= ABA MAIS ================= -->
+        <div id="mais" class="conteudo-aba">
+            <h2 style="margin-bottom: 15px;">⚙️ Mais Opções</h2>
+            <div class="card" style="padding: 20px;">
+                <p>Configurações</p>
+                <p style="color: #64748b; font-size: 13px; margin-top: 10px;">Sobre o projeto RioVivo AI</p>
             </div>
+        </div>
+
+        <!-- ================= MENU INFERIOR ================= -->
+        <nav class="menu-inferior">
+            <button class="btn-tab ativo" onclick="mostrarAba('inicio', this)">
+                <span class="icone">🏠</span>
+                <span>Início</span>
+            </button>
+            <button class="btn-tab" onclick="mostrarAba('mapa', this)">
+                <span class="icone">🗺️</span>
+                <span>Mapa</span>
+            </button>
+            <button class="btn-tab" onclick="mostrarAba('alertas', this)">
+                <span class="icone">🔔</span>
+                <span>Alertas</span>
+            </button>
+            <button class="btn-tab" onclick="mostrarAba('relatorios', this)">
+                <span class="icone">📊</span>
+                <span>Relatórios</span>
+            </button>
+            <button class="btn-tab" onclick="mostrarAba('mais', this)">
+                <span class="icone">⚙️</span>
+                <span>Mais</span>
+            </button>
         </nav>
-
     </div>
 
-    <!-- Link para o seu JavaScript existente -->
-    <script src="script.js"></script>
+    <!-- ================= JAVASCRIPT (LÓGICA DAS ABAS) ================= -->
+    <script>
+        function mostrarAba(idAba, botaoClicado) {
+            // 1. Esconde TODAS as abas
+            const todasAsAbas = document.querySelectorAll('.conteudo-aba');
+            todasAsAbas.forEach(aba => {
+                aba.classList.remove('ativa');
+            });
+
+            // 2. Mostra a aba clicada
+            const abaSelecionada = document.getElementById(idAba);
+            if (abaSelecionada) {
+                abaSelecionada.classList.add('ativa');
+            }
+
+            // 3. Remove a classe 'ativo' de TODOS os botões
+            const todosOsBotoes = document.querySelectorAll('.btn-tab');
+            todosOsBotoes.forEach(botao => {
+                botao.classList.remove('ativo');
+            });
+
+            // 4. Adiciona a classe 'ativo' ao botão clicado
+            if (botaoClicado) {
+                botaoClicado.classList.add('ativo');
+            }
+        }
+    </script>
+
 </body>
 </html>
