@@ -21,9 +21,20 @@ body { background-color: #0b1120; color: #fff; display: flex; justify-content: c
 .titulo-aba { margin-bottom: 15px; font-size: 20px; }
 .modo-demonstracao { font-size: 14px; color: #94a3b8; margin-bottom: 10px; }
 .status-online { display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 15px; }
-.status-online::before { content: ''; width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; display: block; }
+.status-online::before {
+    content: '';
+    width: 8px; height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    display: block;
+    animation: pulsar 1.5s infinite;
+}
+@keyframes pulsar {
+    0%, 100% { opacity: 1; box-shadow: 0 0 4px #22c55e; }
+    50% { opacity: 0.4; box-shadow: 0 0 12px #22c55e; }
+}
 .grid-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-.card { background-color: #1e293b; border-radius: 12px; padding: 15px; border: 1px solid #334155; min-height: 110px; display: flex; flex-direction: column; justify-content: center; }
+.card { background-color: #1e293b; border-radius: 12px; padding: 15px; border: 1px solid #334155; min-height: 110px; display: flex; flex-direction: column; justify-content: center; transition: border-color 0.3s, box-shadow 0.3s; }
 .card-header { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #94a3b8; margin-bottom: 8px; }
 .card-valor { font-size: 26px; font-weight: 700; }
 .card-subtexto { font-size: 11px; color: #64748b; margin-top: 4px; }
@@ -42,8 +53,6 @@ body { background-color: #0b1120; color: #fff; display: flex; justify-content: c
 .btn-tab .icone { font-size: 20px; }
 .btn-tab.ativo { color: #22c55e; font-weight: 600; }
 #lista-alertas li { padding: 6px 0; border-bottom: 1px solid #334155; }
-.mapa-estatico { width: 100%; height: 400px; border-radius: 12px; border: 1px solid #334155; background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; color: #94a3b8; font-size: 14px; text-align: center; padding: 20px; position: relative; overflow: hidden; }
-.mapa-estatico::before { content: '📍'; font-size: 60px; margin-bottom: 10px; }
 </style>
 </head>
 <body>
@@ -95,15 +104,13 @@ body { background-color: #0b1120; color: #fff; display: flex; justify-content: c
 
     <div id="mapa" class="conteudo-aba">
         <h2 class="titulo-aba">🗺️ Mapa do Rio</h2>
-        <div class="mapa-estatico">
-            <strong style="color:#fff; font-size: 16px;">Lago dos Patos</strong><br>
-            Alvorada do Sul - PR<br>
-            <span style="font-size: 11px; margin-top: 10px;">Coordenadas: -22.7833, -51.2333</span>
-        </div>
-        <div class="card" style="margin-top: 12px; padding: 15px;">
-            <p style="font-size: 13px; color: #94a3b8;">📍 Ponto de monitoramento:</p>
-            <p style="font-size: 15px; font-weight: 600; margin-top: 5px;">Boia RioVivo - Lago dos Patos</p>
-        </div>
+        <iframe
+            src="https://www.google.com/maps?q=-22.7833,-51.2333&hl=pt-BR&z=14&output=embed"
+            width="100%"
+            height="400"
+            style="border-radius: 12px; border: 1px solid #334155;"
+            loading="lazy">
+        </iframe>
     </div>
 
     <div id="alertas" class="conteudo-aba">
@@ -170,6 +177,9 @@ body { background-color: #0b1120; color: #fff; display: flex; justify-content: c
 </div>
 
 <script>
+// ========================================
+// 1. NAVEGAÇÃO ENTRE ABAS
+// ========================================
 function mostrarAba(idAba, botaoClicado) {
     document.querySelectorAll('.conteudo-aba').forEach(a => a.classList.remove('ativa'));
     document.getElementById(idAba).classList.add('ativa');
@@ -177,45 +187,47 @@ function mostrarAba(idAba, botaoClicado) {
     botaoClicado.classList.add('ativo');
 }
 
-const btnConectar = document.getElementById('btnConectar');
-btnConectar.addEventListener('click', () => {
-    if (btnConectar.textContent.includes('Conectado')) {
-        btnConectar.textContent = '🔗 Conectar à boia';
-        btnConectar.style.backgroundColor = 'transparent';
-        btnConectar.style.color = '#22c55e';
-    } else {
-        btnConectar.textContent = '✅ Conectado';
-        btnConectar.style.backgroundColor = '#22c55e';
-        btnConectar.style.color = '#0f172a';
-    }
-});
-
+// ========================================
+// 2. BUZZER PASSIVO (Web Audio API)
+// ========================================
 let ctxAudio = null, oscAtivo = null;
+
 function tocarBuzzer(freq = 2000, dur = 300) {
     try {
         if (!ctxAudio) ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
         if (ctxAudio.state === 'suspended') ctxAudio.resume();
         const o = ctxAudio.createOscillator(), g = ctxAudio.createGain();
-        o.type = 'square'; o.frequency.value = freq;
+        o.type = 'square';
+        o.frequency.value = freq;
         g.gain.setValueAtTime(0.2, ctxAudio.currentTime);
-        o.connect(g); g.connect(ctxAudio.destination);
-        o.start(); o.stop(ctxAudio.currentTime + dur / 1000);
+        o.connect(g);
+        g.connect(ctxAudio.destination);
+        o.start();
+        o.stop(ctxAudio.currentTime + dur / 1000);
     } catch (e) { console.error(e); }
 }
+
 function iniciarBuzzerContinuo() {
     if (!ctxAudio) ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
     if (ctxAudio.state === 'suspended') ctxAudio.resume();
     if (oscAtivo) return;
     oscAtivo = ctxAudio.createOscillator();
     const g = ctxAudio.createGain();
-    oscAtivo.type = 'square'; oscAtivo.frequency.value = 2000;
+    oscAtivo.type = 'square';
+    oscAtivo.frequency.value = 2000;
     g.gain.value = 0.12;
-    oscAtivo.connect(g); g.connect(ctxAudio.destination);
+    oscAtivo.connect(g);
+    g.connect(ctxAudio.destination);
     oscAtivo.start();
 }
+
 function pararBuzzer() {
-    if (oscAtivo) { try { oscAtivo.stop(); } catch(e){} oscAtivo = null; }
+    if (oscAtivo) {
+        try { oscAtivo.stop(); } catch(e){}
+        oscAtivo = null;
+    }
 }
+
 document.getElementById('btnTestarBuzzer').addEventListener('click', () => {
     tocarBuzzer(2000, 200);
     setTimeout(() => tocarBuzzer(2000, 200), 350);
@@ -223,46 +235,119 @@ document.getElementById('btnTestarBuzzer').addEventListener('click', () => {
 });
 document.getElementById('btnPararBuzzer').addEventListener('click', pararBuzzer);
 
+// ========================================
+// 3. BOTÃO CONECTAR À BOIA
+// ========================================
+const btnConectar = document.getElementById('btnConectar');
+const statusOnline = document.querySelector('.status-online');
+
+btnConectar.addEventListener('click', () => {
+    if (btnConectar.textContent.includes('Conectado')) {
+        // DESCONECTAR
+        btnConectar.textContent = '🔗 Conectar à boia';
+        btnConectar.style.backgroundColor = 'transparent';
+        btnConectar.style.color = '#22c55e';
+        if (statusOnline) {
+            statusOnline.textContent = 'Offline';
+            statusOnline.style.color = '#94a3b8';
+        }
+    } else if (btnConectar.textContent.includes('Conectando')) {
+        return;
+    } else {
+        // CONECTAR
+        btnConectar.textContent = '⏳ Conectando...';
+        btnConectar.style.backgroundColor = '#f59e0b';
+        btnConectar.style.color = '#0f172a';
+        btnConectar.disabled = true;
+
+        setTimeout(() => {
+            btnConectar.textContent = '✅ Conectado';
+            btnConectar.style.backgroundColor = '#22c55e';
+            btnConectar.style.color = '#0f172a';
+            btnConectar.disabled = false;
+
+            // 🔔 Bip sonoro ao conectar
+            tocarBuzzer(1500, 120);
+
+            if (statusOnline) {
+                statusOnline.textContent = 'Conectado à boia';
+                statusOnline.style.color = '#22c55e';
+            }
+        }, 1000);
+    }
+});
+
+// ========================================
+// 4. HISTÓRICO DE ALERTAS
+// ========================================
 const alertas = [];
+
 function registrarAlerta(msg) {
     const hora = new Date().toLocaleTimeString('pt-BR');
     alertas.unshift(`${hora} — ${msg}`);
     if (alertas.length > 10) alertas.pop();
     const lista = document.getElementById('lista-alertas');
-    lista.innerHTML = alertas.length ? alertas.map(a => `<li>${a}</li>`).join('') : '<li>Nenhum alerta.</li>';
+    lista.innerHTML = alertas.length
+        ? alertas.map(a => `<li>${a}</li>`).join('')
+        : '<li>Nenhum alerta.</li>';
 }
+
 document.getElementById('btnLimparAlertas').addEventListener('click', () => {
     alertas.length = 0;
     document.getElementById('lista-alertas').innerHTML = '<li>Nenhum alerta.</li>';
 });
 
+// ========================================
+// 5. VERIFICAÇÃO DE ALERTA (pH)
+// ========================================
 let ultimoEstado = false;
+
 function verificarAlerta(ph) {
     const fora = ph < 6.0 || ph > 8.5;
     const st = document.getElementById('status-alerta');
     const msg = document.getElementById('msg-alerta');
     const stPh = document.getElementById('status-ph');
+    const cardPh = document.getElementById('valor-ph').parentElement;
 
     if (fora) {
-        if (!ultimoEstado) { registrarAlerta(`pH fora: ${ph}`); iniciarBuzzerContinuo(); }
-        st.textContent = `🚨 Alerta! pH: ${ph}`; st.style.color = '#ef4444';
+        if (!ultimoEstado) {
+            registrarAlerta(`pH fora: ${ph}`);
+            iniciarBuzzerContinuo();
+        }
+        st.textContent = `🚨 Alerta! pH: ${ph}`;
+        st.style.color = '#ef4444';
         msg.textContent = 'pH fora da faixa segura (6.0 a 8.5).';
-        stPh.textContent = 'Fora do normal'; stPh.style.color = '#ef4444';
+        stPh.textContent = 'Fora do normal';
+        stPh.style.color = '#ef4444';
+        // 🚨 Borda vermelha no card do pH
+        cardPh.style.borderColor = '#ef4444';
+        cardPh.style.boxShadow = '0 0 12px rgba(239,68,68,0.4)';
     } else {
         if (ultimoEstado) pararBuzzer();
-        st.textContent = '✅ Nenhum alerta no momento.'; st.style.color = '#22c55e';
+        st.textContent = '✅ Nenhum alerta no momento.';
+        st.style.color = '#22c55e';
         msg.textContent = 'O rio está dentro dos parâmetros normais.';
-        stPh.textContent = 'Normal'; stPh.style.color = '#64748b';
+        stPh.textContent = 'Normal';
+        stPh.style.color = '#64748b';
+        // ✅ Volta a borda normal
+        cardPh.style.borderColor = '#334155';
+        cardPh.style.boxShadow = 'none';
     }
     ultimoEstado = fora;
 }
 
+// ========================================
+// 6. GRÁFICOS
+// ========================================
 let gPh = null, gTemp = null;
+
 function iniciarGraficos() {
     const opt = {
         type: 'line',
         options: {
-            responsive: true, maintainAspectRatio: false, animation: false,
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
             plugins: { legend: { display: false } },
             scales: {
                 x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#334155' } },
@@ -279,20 +364,32 @@ function iniciarGraficos() {
         data: { labels: [], datasets: [{ data: [], borderColor: '#f59e0b', backgroundColor: 'rgba(245,158,11,0.15)', tension: 0.3, fill: true, pointRadius: 2 }] }
     });
 }
+
 function atualizarGraficos(ph, temp) {
     const hora = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     if (gPh) {
-        gPh.data.labels.push(hora); gPh.data.datasets[0].data.push(ph);
-        if (gPh.data.labels.length > 15) { gPh.data.labels.shift(); gPh.data.datasets[0].data.shift(); }
+        gPh.data.labels.push(hora);
+        gPh.data.datasets[0].data.push(ph);
+        if (gPh.data.labels.length > 15) {
+            gPh.data.labels.shift();
+            gPh.data.datasets[0].data.shift();
+        }
         gPh.update('none');
     }
     if (gTemp) {
-        gTemp.data.labels.push(hora); gTemp.data.datasets[0].data.push(parseFloat(temp));
-        if (gTemp.data.labels.length > 15) { gTemp.data.labels.shift(); gTemp.data.datasets[0].data.shift(); }
+        gTemp.data.labels.push(hora);
+        gTemp.data.datasets[0].data.push(parseFloat(temp));
+        if (gTemp.data.labels.length > 15) {
+            gTemp.data.labels.shift();
+            gTemp.data.datasets[0].data.shift();
+        }
         gTemp.update('none');
     }
 }
 
+// ========================================
+// 7. SENSORES
+// ========================================
 function atualizarSensores() {
     const ph = parseFloat((6.8 + Math.random() * 0.6).toFixed(1));
     const turb = Math.floor(18 + Math.random() * 8);
@@ -308,6 +405,9 @@ function atualizarSensores() {
     atualizarGraficos(ph, temp);
 }
 
+// ========================================
+// 8. INICIALIZAÇÃO
+// ========================================
 window.addEventListener('load', () => {
     iniciarGraficos();
     setTimeout(atualizarSensores, 500);

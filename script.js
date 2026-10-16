@@ -104,7 +104,12 @@ function iniciarGraficos() {
             plugins: { legend: { display: false } },
             scales: {
                 x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#334155' } },
-                y: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: '#334155' } }
+                y: { 
+    min: 6.5, 
+    max: 7.5, 
+    ticks: { color: '#64748b', font: { size: 10 } }, 
+    grid: { color: '#334155' } 
+}
             }
         }
     };
@@ -133,7 +138,7 @@ function atualizarGraficos(ph, temp) {
 
 // ===== SENSORES =====
 function atualizarSensores() {
-    const ph = parseFloat((6.8 + Math.random() * 0.6).toFixed(1));
+    const ph = parseFloat((6.0 + Math.random() * 2.0).toFixed(1));
     const turb = Math.floor(18 + Math.random() * 8);
     const temp = (22.5 + Math.random() * 3).toFixed(1);
     const niv = Math.floor(30 + Math.random() * 10);
